@@ -54,19 +54,24 @@
                             @endif
                         @else
                         <li class="nav-item">
-                            <div class="input-group">
-                            <button type="button" class="btn btn-outline-secondary"><i id="iconLink" data-feather="search"></i></button>
-                            <button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
-                                <span class="visually-hidden">Toggle Dropdown</span>
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#">Action</a></li>
-                                <li><a class="dropdown-item" href="#">Another action</a></li>
-                                <li><a class="dropdown-item" href="#">Something else here</a></li>
-                                <li><a class="dropdown-item" href="#">Separated link</a></li>
-                            </ul>
-                            <input type="text" class="form-control" aria-label="Text input with segmented dropdown button">
-                            </div>
+                            <form action="/search" method="POST">
+                                @csrf
+                                <div class="input-group">
+                                    <button type="submit" class="btn btn-outline-secondary">
+                                        <i id="iconLink" data-feather="search"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <span class="visually-hidden">Toggle Dropdown</span>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="#">Action</a></li>
+                                        <li><a class="dropdown-item" href="#">Another action</a></li>
+                                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                        <li><a class="dropdown-item" href="#">Separated link</a></li>
+                                    </ul>
+                                    <input type="text" class="form-control" aria-label="Text input with segmented dropdown button">
+                                </div>
+                            </form>
                         </li>
                         <li class="ms-4 nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
