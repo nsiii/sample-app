@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\ProductCategory;
 
 class HomeController extends Controller
 {
@@ -22,9 +23,11 @@ class HomeController extends Controller
      * @return \Illuminate\Contracts\Support\Renderable
      */
     public function index()
-    {
-        $user = \Auth::user();
-        return view('home', compact('user'));
+    {   
+        // カテゴリ名の取得
+        $product_categories = ProductCategory::get(['id','name']);
+        // dd($product_categories);
+        return view('home', compact('product_categories'));
     }
 
     public function search(Request $request)
