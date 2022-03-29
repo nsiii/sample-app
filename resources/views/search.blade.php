@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-2">
+        <div class="col-lg-2 col-md-3">
             <div class="card">
                 <div class="card-header">{{ __('Category') }}</div>
                 <div class="card-body">
@@ -19,7 +19,7 @@
             </div>
         </div>
                 
-        <div class="col-md-10">
+        <div class="col-lg-10 col-md-9">
             <div class="card">
                 <div class="card-header">{{ __('Products') }}</div>
                 
@@ -31,11 +31,15 @@
                     @endif
                     <div class="row row-cols-3">
                         @foreach ($matches as $match)
-                            <a id="iconLink" class="col" href="#">
-                                <p>名前: {{ $match['name'] }}</p>
-                                <p>金額: {{ $match['price'] }}円</p>
-                                <p>在庫: {{ $match['stock'] }}個</p>    
-                            </a>
+                            <form method="POST" action="/product_detail">
+                                @csrf
+                                <input type="hidden" name="product_id" value="{{ $match['id'] }}">
+                                <button type="submit" class="col">
+                                    <p>名前: {{ $match['name'] }}</p>
+                                    <p>金額: {{ $match['price'] }}円</p>
+                                    <p>在庫: {{ $match['stock'] }}個</p>    
+                                </button>
+                            </form>
                         @endforeach
                     </div>
                 </div>
