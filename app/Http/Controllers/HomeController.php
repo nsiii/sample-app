@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\ProductCategory;
+use App\Models\Product;
 
 class HomeController extends Controller
 {
@@ -29,9 +30,24 @@ class HomeController extends Controller
         // dd($product_categories);
         return view('home', compact('product_categories'));
     }
+    
+    public function search()
+    {   
+        // カテゴリ名の取得
+        $product_categories = ProductCategory::get(['id','name']);
+        // dd($product_categories);
+        return view('search', compact('product_categories'));
+    }
 
-    public function search(Request $request)
+    // この中でやりたい処理は、検索キーワードに一致する商品をビューに表示する
+    public function search_result(Request $request)
     {
-        return view('search');
+        // $search_word = $request->all();
+        // // 検索ワードと一致するものを取得する
+        // $exist = Product::where('name', $search_word[0])->get();
+        // dd($exist);
+
+
+        return redirect()->route('search');
     }
 }

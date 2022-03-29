@@ -12,8 +12,9 @@
                             {{ session('status') }}
                         </div>
                     @endif
-
-                    {{ __('You are logged in!') }}
+                        @foreach($product_categories as $product_category)
+                            <a id="iconLink" href="#">{{ $product_category['name'] }}<i data-feather="chevron-right"></i></a>
+                        @endforeach
                 </div>
             </div>
         </div>

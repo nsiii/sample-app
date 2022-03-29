@@ -12,9 +12,9 @@
                             {{ session('status') }}
                         </div>
                     @endif
-                    @foreach($product_categories as $product_category)
-                        <a href="#">{{ $product_category['name'] }}</a>
-                    @endforeach
+                        @foreach($product_categories as $product_category)
+                            <a id="iconLink" href="#">{{ $product_category['name'] }}<i data-feather="chevron-right"></i></a>
+                        @endforeach
                 </div>
             </div>
         </div>

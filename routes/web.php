@@ -20,4 +20,5 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::post('/search', [App\Http\Controllers\HomeController::class, 'search'])->name('search');
+Route::get('/search', [App\Http\Controllers\HomeController::class, 'search'])->name('search');
+Route::post('/search_result', [App\Http\Controllers\HomeController::class, 'search_result'])->name('search_result');
