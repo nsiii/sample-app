@@ -38,16 +38,16 @@ class HomeController extends Controller
         // dd($product_categories);
         return view('search', compact('product_categories'));
     }
-
+    
     // この中でやりたい処理は、検索キーワードに一致する商品をビューに表示する
     public function search_result(Request $request)
     {
-        // $search_word = $request->all();
+        $product_categories = ProductCategory::get(['id','name']);
+        $keyword = $request->input('keyword');
         // // 検索ワードと一致するものを取得する
-        // $exist = Product::where('name', $search_word[0])->get();
-        // dd($exist);
-
-
-        return redirect()->route('search');
+        $matches = Product::where('name','LIKE', '%'.$keyword.'%')->get();
+        // dd($matches);
+        
+        return view('search', compact('product_categories','matches'));
     }
 }

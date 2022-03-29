@@ -54,22 +54,20 @@
                             @endif
                         @else
                         <li class="nav-item">
-                            <form action="/search_result" method="POST">
+                            <form class="input-group" action="/search_result" method="POST">
                                 @csrf
-                                <div class="input-group">
-                                    <button type="submit" class="btn btn-outline-secondary">
-                                        <i id="iconLink" data-feather="search"></i>
-                                    </button>
-                                    <button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <span class="visually-hidden">Toggle Dropdown</span>
-                                    </button>
-                                    <ul class="dropdown-menu">
-                                        @foreach($product_categories as $product_category)
-                                            <li><a class="dropdown-item" href="#">{{ $product_category['name'] }}</a></li>
-                                        @endforeach
-                                    </ul> 
-                                    <input type="text" class="form-control" placeholder="検索" aria-label="Text input with segmented dropdown button">
-                                </div>
+                                <button type="submit" class="btn btn-outline-secondary">
+                                    <i id="iconLink" data-feather="search"></i>
+                                </button>
+                                <button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <span class="visually-hidden">Toggle Dropdown</span>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    @foreach($product_categories as $product_category)
+                                        <li><a class="dropdown-item" href="#">{{ $product_category['name'] }}</a></li>
+                                    @endforeach
+                                </ul> 
+                                <input type="text" name="keyword" class="form-control" placeholder="検索" aria-label="Text input with segmented dropdown button">
                             </form>
                         </li>
                         <li class="ms-4 nav-item dropdown">
