@@ -84,6 +84,7 @@ class HomeController extends Controller
         foreach ($carts as $cart) {
             $add_products[] = Product::where('id', $cart['product_id'])->first();
         }
+        // dd($add_products);
         return view('cart', compact('user','product_categories', 'add_products'));
     }
     
@@ -106,6 +107,25 @@ class HomeController extends Controller
             'price' => $product_price
         ]);
 
+        return redirect()->route('cart')->with(compact('product_categories'));
+
+    }
+
+    public function delete_from_cart(Request $request)
+    {   
+        // カテゴリ名の取得
+        $product_categories = ProductCategory::get(['id','name']);
+        
+        // ユーザー情報の取得
+        $user = \Auth::user();
+        // 商品IDを取得
+        $product_id = $request->input('product_id');
+        // 押した削除ボタンの商品IDと一致するレコードを取得
+        $delete_records = Cart::where('user_id', $user['id'])->where('product_id', $product_id)->get();
+        foreach ($delete_records as $delete_record) {
+            $delete_record->delete();
+        }
+        
         return redirect()->route('cart')->with(compact('product_categories'));
 
     }
