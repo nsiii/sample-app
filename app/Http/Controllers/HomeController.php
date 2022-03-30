@@ -69,7 +69,25 @@ class HomeController extends Controller
         return view('product_detail', compact('product_categories', 'product_detail'));
     }
 
-    public function cart(Request $request)
+
+    public function cart()
+    {   
+        // カテゴリ名の取得
+        $product_categories = ProductCategory::get(['id','name']);
+        
+        // ユーザー情報の取得
+        $user = \Auth::user();
+        
+        // ログインしているユーザーのカートの中身を取得
+        $carts = Cart::where('user_id', $user['id'])->get();
+        // そのカートに入れている商品名を配列に格納
+        foreach ($carts as $cart) {
+            $add_products[] = Product::where('id', $cart['product_id'])->first();
+        }
+        return view('cart', compact('user','product_categories', 'add_products'));
+    }
+    
+    public function add_to_cart(Request $request)
     {   
         // カテゴリ名の取得
         $product_categories = ProductCategory::get(['id','name']);
@@ -87,9 +105,8 @@ class HomeController extends Controller
             'quantity' => 1,
             'price' => $product_price
         ]);
-        $cart_record = Cart::where('id', $cart_id)->first();
-        $product_detail = Product::where('id', $cart_record['product_id'])->first();
-        // dd($product_detail);
-        return view('cart', compact('user','product_categories', 'product_detail'));
+
+        return redirect()->route('cart')->with(compact('product_categories'));
+
     }
 }

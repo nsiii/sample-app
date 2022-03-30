@@ -7,7 +7,9 @@
             <div class="card">
                 <div class="card-header">{{ __('商品画像') }}</div>
                 <div class="card-body">
-                    {{ $product_detail['name'] }}
+                    @foreach($add_products as $add_product)
+                        <a class="dropdown-item" href="#">{{ $add_product['name'] }}</a>
+                    @endforeach
                 </div>
             </div>
         </div>

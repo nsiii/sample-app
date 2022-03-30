@@ -105,7 +105,7 @@
                             </div>
                         </li>
                         <li class="py-2 ms-4 nav-item">
-                            <a id="iconLink" href="#">
+                            <a id="iconLink" href="/cart">
                                 <i data-feather="shopping-cart"></i>
                             </a>
                         </li>

@@ -16,7 +16,7 @@
                 <div class="card-body">
                     <p>{{ $product_detail['name'] }}</p>
                     <button type="button" class="btn btn-outline-primary">今すぐ買う</button>
-                    <form class="input-group" action="/cart" method="POST">
+                    <form class="input-group" action="/add_to_cart" method="POST">
                         @csrf
                         <button type="submit" class="btn btn-outline-primary"><i class="me-2" data-feather="shopping-cart"></i>カートに入れる</button>
                         <input type="hidden" name="product_id" value="{{ $product_detail['id'] }}">
