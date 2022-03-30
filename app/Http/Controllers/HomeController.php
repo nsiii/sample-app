@@ -120,13 +120,14 @@ class HomeController extends Controller
         $user = \Auth::user();
         // 商品IDを取得
         $product_id = $request->input('product_id');
+        $product_name = $request->input('product_name');
         // 押した削除ボタンの商品IDと一致するレコードを取得
         $delete_records = Cart::where('user_id', $user['id'])->where('product_id', $product_id)->get();
         foreach ($delete_records as $delete_record) {
             $delete_record->delete();
         }
         
-        return redirect()->route('cart')->with(compact('product_categories'));
+        return redirect()->route('cart')->with('success', "'$product_name'をカートから削除しました!", compact('product_categories'));
 
     }
 }

@@ -5,15 +5,21 @@
     <div class="row justify-content-center">
         <div class="col-md-5">
             <div class="card">
-                <div class="card-header">{{ __('商品画像') }}</div>
+                @if (session('success'))
+                    <div class="alert alert-success" role="alert">
+                        {{ session('success') }}
+                    </div>
+                @endif
+                <div class="card-header">{{ __('ショッピングカート') }}</div>
                 <div class="card-body">
                     @foreach($add_products as $add_product)
-                        <div class="row align-items-center justify-content-between">
+                        <div class="mt-2 row align-items-center justify-content-between">
                             <a id="iconLink" class="col-4" href="#">{{ $add_product['name'] }}</a>
                             <form class="col-2" action="/delete_from_cart" method="POST">
                                 @csrf
                                 <button class="btn btn-outline-secondary" type="submit">削除</button>
                                 <input type="hidden" name="product_id" value="{{ $add_product['id'] }}">
+                                <input type="hidden" name="product_name" value="{{ $add_product['name'] }}">
                             </form>
                         </div>
                     @endforeach
