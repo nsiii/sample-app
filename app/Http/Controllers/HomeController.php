@@ -66,4 +66,14 @@ class HomeController extends Controller
 
         return view('product_detail', compact('product_categories', 'product_detail'));
     }
+
+    public function cart(Request $request)
+    {   
+        // カテゴリ名の取得
+        $product_categories = ProductCategory::get(['id','name']);
+        
+        // dd($cart);
+    
+        return view('cart', compact('product_categories'));
+    }
 }

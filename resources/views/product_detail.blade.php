@@ -15,9 +15,33 @@
                 <div class="card-header">{{ __('商品概要') }}</div>
                 <div class="card-body">
                     <p>{{ $product_detail['name'] }}</p>
+                    <button type="button" class="btn btn-outline-primary">今すぐ買う</button>
+                    <form class="input-group" action="/cart" method="POST">
+                        @csrf
+                        <button type="submit" class="btn btn-outline-primary"><i class="me-2" data-feather="shopping-cart"></i>カートに入れる</button>
+                    </form>
                 </div>
             </div>
         </div>
+
+        <div class="mt-5">
+            <div class="card">
+                <div class="card-header">{{ __('商品説明') }}</div>
+                <div class="card-body">
+                    <p>{{ $product_detail['name'] }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-5">
+            <div class="card">
+                <div class="card-header">{{ __('商品説明') }}</div>
+                <div class="card-body">
+                    <p>{{ $product_detail['name'] }}</p>
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
 @endsection

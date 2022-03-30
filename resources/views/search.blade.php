@@ -34,7 +34,7 @@
                             <form method="POST" action="/product_detail">
                                 @csrf
                                 <input type="hidden" name="product_id" value="{{ $match['id'] }}">
-                                <button type="submit" class="col">
+                                <button type="submit" class="col btn btn-link">
                                     <p>名前: {{ $match['name'] }}</p>
                                     <p>金額: {{ $match['price'] }}円</p>
                                     <p>在庫: {{ $match['stock'] }}個</p>    
