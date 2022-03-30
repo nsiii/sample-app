@@ -19,6 +19,8 @@
                     <form class="input-group" action="/cart" method="POST">
                         @csrf
                         <button type="submit" class="btn btn-outline-primary"><i class="me-2" data-feather="shopping-cart"></i>カートに入れる</button>
+                        <input type="hidden" name="product_id" value="{{ $product_detail['id'] }}">
+                        <input type="hidden" name="product_price" value="{{ $product_detail['price'] }}">
                     </form>
                 </div>
             </div>

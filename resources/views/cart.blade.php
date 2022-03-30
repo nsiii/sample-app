@@ -7,6 +7,7 @@
             <div class="card">
                 <div class="card-header">{{ __('商品画像') }}</div>
                 <div class="card-body">
+                    {{ $product_detail['name'] }}
                 </div>
             </div>
         </div>

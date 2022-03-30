@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\ProductCategory;
 use App\Models\Product;
+use App\Models\Cart;
+
 
 class HomeController extends Controller
 {
@@ -72,8 +74,22 @@ class HomeController extends Controller
         // カテゴリ名の取得
         $product_categories = ProductCategory::get(['id','name']);
         
-        // dd($cart);
-    
-        return view('cart', compact('product_categories'));
+        // ユーザー情報の取得
+        $user = \Auth::user();
+        // 商品情報を取得
+        $product_id = $request->input('product_id');
+        $product_price = $request->input('product_price');
+        
+        // ユーザーIDをcartテーブルに登録し、cart_idを取得
+        $cart_id = Cart::insertGetId([
+            'user_id' => $user['id'],
+            'product_id' => $product_id,
+            'quantity' => 1,
+            'price' => $product_price
+        ]);
+        $cart_record = Cart::where('id', $cart_id)->first();
+        $product_detail = Product::where('id', $cart_record['product_id'])->first();
+        // dd($product_detail);
+        return view('cart', compact('user','product_categories', 'product_detail'));
     }
 }
