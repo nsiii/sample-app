@@ -79,13 +79,20 @@ class HomeController extends Controller
         $user = \Auth::user();
         
         // ログインしているユーザーのカートの中身を取得
-        $carts = Cart::where('user_id', $user['id'])->get();
-        // そのカートに入れている商品名を配列に格納
-        foreach ($carts as $cart) {
-            $add_products[] = Product::where('id', $cart['product_id'])->first();
+        $carts = Cart::where('user_id', $user['id'])->get()->all();
+
+        // cartsが空の場合,中身が空であるメッセージを出す
+        if (empty($carts)) {
+            $empty_cart = "カートの中身は空です。";
+            return view('cart', compact('user','product_categories', 'empty_cart'));
+        } else {
+            // そのカートに入れている商品名を配列に格納
+            foreach ($carts as $cart) {
+                $add_products[] = Product::where('id', $cart['product_id'])->first();
+            }
+            return view('cart', compact('user','product_categories', 'add_products'));
         }
-        // dd($add_products);
-        return view('cart', compact('user','product_categories', 'add_products'));
+        
     }
     
     public function add_to_cart(Request $request)
@@ -98,14 +105,26 @@ class HomeController extends Controller
         // 商品情報を取得
         $product_id = $request->input('product_id');
         $product_price = $request->input('product_price');
+        // 既にカートに入れた商品かどうか判別する
+        $already_exist = Cart::where('product_id', $product_id)->first();
+        $i = Cart::where('product_id', $product_id);
+
+        // 同じproduct_idが既にカート内にある時、quantityの値を+1する
+        if (empty($already_exist)) {
+            // ユーザーIDをcartテーブルに登録し、cart_idを取得
+            $cart_id = Cart::insertGetId([
+                'user_id' => $user['id'],
+                'product_id' => $product_id,
+                'quantity' => 1,
+                'price' => $product_price
+            ]);
+        } else {
+            // 存在しているレコードの中からquantityカラムを取得
+            $quantity = $i->first('quantity');
+            $quantity['quantity'] += 1;
+            $i->update(['quantity' => $quantity['quantity'] ]);
+        }
         
-        // ユーザーIDをcartテーブルに登録し、cart_idを取得
-        $cart_id = Cart::insertGetId([
-            'user_id' => $user['id'],
-            'product_id' => $product_id,
-            'quantity' => 1,
-            'price' => $product_price
-        ]);
 
         return redirect()->route('cart')->with(compact('product_categories'));
 
@@ -127,7 +146,27 @@ class HomeController extends Controller
             $delete_record->delete();
         }
         
-        return redirect()->route('cart')->with('success', "'$product_name'をカートから削除しました!", compact('product_categories'));
+        return redirect()->route('cart')->with('success', "{$product_name}をカートから削除しました!", compact('product_categories'));
+
+    }
+
+    public function purchase(Request $request)
+    {   
+        // カテゴリ名の取得
+        $product_categories = ProductCategory::get(['id','name']);
+        
+        // ユーザー情報の取得
+        $user = \Auth::user();
+        // 商品IDを取得
+        $product_id = $request->input('product_id');
+        $product_name = $request->input('product_name');
+        // 押した削除ボタンの商品IDと一致するレコードを取得
+        $delete_records = Cart::where('user_id', $user['id'])->where('product_id', $product_id)->get();
+        foreach ($delete_records as $delete_record) {
+            $delete_record->delete();
+        }
+        
+        return redirect()->route('cart')->with('success', "{$product_name}をカートから削除しました!", compact('product_categories'));
 
     }
 }

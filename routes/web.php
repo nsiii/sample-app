@@ -25,3 +25,4 @@ Route::post('/search_result', [App\Http\Controllers\HomeController::class, 'sear
 Route::post('/product_detail', [App\Http\Controllers\HomeController::class, 'product_detail'])->name('product_detail');
 Route::post('/add_to_cart', [App\Http\Controllers\HomeController::class, 'add_to_cart'])->name('add_to_cart');
 Route::post('/delete_from_cart', [App\Http\Controllers\HomeController::class, 'delete_from_cart'])->name('delete_from_cart');
+Route::post('/purchase', [App\Http\Controllers\HomeController::class, 'purchase'])->name('purchase');
