@@ -21,7 +21,7 @@
                                     <form class="input-group" action="/add_to_cart" method="POST">
                                         @csrf
                                         {{ $cart_join_product['quantity'] }}
-                                        <button class="ms-2 btn btn-outline-secondary btn-sm">+</button>
+                                        <button type="submit" class="ms-2 btn btn-outline-secondary btn-sm">+</button>
                                         <input type="hidden" name="product_id" value="{{ $cart_join_product['product_id'] }}">
                                     </form>
                                 </a>

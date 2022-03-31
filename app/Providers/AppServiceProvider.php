@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use App\Models\ProductCategory;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,6 +24,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        
+        // クロージャベースのコンポーザを使用
+        view()->composer('*', function ($view) {
+            $user = \Auth::user();
+            $product_categories = ProductCategory::get(['id','name']);
+            $view->with('user', $user)->with('product_categories', $product_categories);
+        });
     }
 }
