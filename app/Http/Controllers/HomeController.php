@@ -78,21 +78,16 @@ class HomeController extends Controller
         // ユーザー情報の取得
         $user = \Auth::user();
         
-        // ログインしているユーザーのカートの中身を取得
-        $carts = Cart::where('user_id', $user['id'])->get()->all();
-
-        // cartsが空の場合,中身が空であるメッセージを出す
-        if (empty($carts)) {
+        // ログインしているユーザーのカートの中身と関連の商品情報を取得
+        $carts_join_products = Cart::where('user_id', $user['id'])->join('products', 'carts.product_id', '=', 'products.id')->get()->all();
+        
+        // カートが空の場合、メッセージを出す
+        if (empty($carts_join_products)) {
             $empty_cart = "カートの中身は空です。";
             return view('cart', compact('user','product_categories', 'empty_cart'));
         } else {
-            // そのカートに入れている商品名を配列に格納
-            foreach ($carts as $cart) {
-                $add_products[] = Product::where('id', $cart['product_id'])->first();
-            }
-            return view('cart', compact('user','product_categories', 'add_products'));
+            return view('cart', compact('user','product_categories', 'carts_join_products'));
         }
-        
     }
     
     public function add_to_cart(Request $request)
@@ -107,8 +102,7 @@ class HomeController extends Controller
         $product_price = $request->input('product_price');
         // 既にカートに入れた商品かどうか判別する
         $already_exist = Cart::where('product_id', $product_id)->first();
-        $i = Cart::where('product_id', $product_id);
-
+        
         // 同じproduct_idが既にカート内にある時、quantityの値を+1する
         if (empty($already_exist)) {
             // ユーザーIDをcartテーブルに登録し、cart_idを取得
@@ -119,6 +113,7 @@ class HomeController extends Controller
                 'price' => $product_price
             ]);
         } else {
+            $i = Cart::where('product_id', $product_id);
             // 存在しているレコードの中からquantityカラムを取得
             $quantity = $i->first('quantity');
             $quantity['quantity'] += 1;
