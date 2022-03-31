@@ -17,7 +17,14 @@
                         @foreach($carts_join_products as $cart_join_product)
                             <div class="mt-2 row align-items-center justify-content-between">
                                 <a id="iconLink" class="col-5" href="#">{{ $cart_join_product['name'] }}</a>
-                                <a id="iconLink" class="col-2" href="#">{{ $cart_join_product['quantity'] }}</a>
+                                <a id="iconLink" class="col-2" href="#">
+                                    <form class="input-group" action="/add_to_cart" method="POST">
+                                        @csrf
+                                        {{ $cart_join_product['quantity'] }}
+                                        <button class="ms-2 btn btn-outline-secondary btn-sm">+</button>
+                                        <input type="hidden" name="product_id" value="{{ $cart_join_product['product_id'] }}">
+                                    </form>
+                                </a>
                                 <form class="col-2" action="/delete_from_cart" method="POST">
                                     @csrf
                                     <button class="btn btn-outline-secondary" type="submit">削除</button>
