@@ -23,6 +23,7 @@
                                         {{ $cart_join_product['quantity'] }}
                                         <button type="submit" class="ms-2 btn btn-outline-secondary btn-sm">+</button>
                                         <input type="hidden" name="product_id" value="{{ $cart_join_product['product_id'] }}">
+                                        <input type="hidden" name="product_price" value="{{ $cart_join_product['price'] }}">
                                     </form>
                                 </a>
                                 <form class="col-2" action="/delete_from_cart" method="POST">

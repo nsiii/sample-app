@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\ProductCategory;
 use App\Models\Product;
 use App\Models\Cart;
 
@@ -64,9 +63,9 @@ class HomeController extends Controller
         // カートが空の場合、メッセージを出す
         if (empty($carts_join_products)) {
             $empty_cart = "カートの中身は空です。";
-            return view('cart', compact('user', 'empty_cart'));
+            return view('cart', compact('empty_cart'));
         } else {
-            return view('cart', compact('user', 'carts_join_products'));
+            return view('cart', compact('carts_join_products'));
         }
     }
     
@@ -77,8 +76,9 @@ class HomeController extends Controller
         // 商品情報を取得
         $product_id = $request->input('product_id');
         $product_price = $request->input('product_price');
+
         // 既にカートに入れた商品かどうか判別する
-        $already_exist = Cart::where('product_id', $product_id)->first();
+        $already_exist = Cart::where('user_id', $user['id'])->where('product_id', $product_id)->first();
         
         // 同じproduct_idが既にカート内にある時、quantityの値を+1する
         if (empty($already_exist)) {
@@ -90,11 +90,18 @@ class HomeController extends Controller
                 'price' => $product_price
             ]);
         } else {
-            $i = Cart::where('product_id', $product_id);
+            // ユーザー認証
+            $i = Cart::where('user_id', $user['id'])->where('product_id', $product_id);
             // 存在しているレコードの中からquantityカラムを取得
             $quantity = $i->first('quantity');
             $quantity['quantity'] += 1;
-            $i->update(['quantity' => $quantity['quantity'] ]);
+            $price = $i->first('price');
+            $price['price'] += $product_price;
+
+            $i->update([
+                'quantity' => $quantity['quantity'],
+                'price' => $price['price']
+            ]);
         }
         
         return redirect()->route('cart');
