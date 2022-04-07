@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Cart;
-
+use App\Models\Image;
+use App\Models\ProductDetail;
 
 class HomeController extends Controller
 {
@@ -47,8 +48,9 @@ class HomeController extends Controller
         $product_id = $request->input('product_id');
         // 取得した商品IDでID検索し、そのレコードを取得
         $product_detail = Product::where('id', $product_id)->first();
-
-        return view('product_detail', compact('product_detail'));
+        $images = Image::where('product_id', $product_id)->get();
+        $product_contents = ProductDetail::where('product_id', $product_id)->get();
+        return view('product_detail', compact('product_detail', 'images', 'product_contents'));
     }
 
 
@@ -56,7 +58,7 @@ class HomeController extends Controller
     {   
         // ユーザー情報の取得
         $user = \Auth::user();
-        
+    
         // ログインしているユーザーのカートの中身と関連の商品情報を取得
         $carts_join_products = Cart::where('user_id', $user['id'])->join('products', 'carts.product_id', '=', 'products.id')->get()->all();
         

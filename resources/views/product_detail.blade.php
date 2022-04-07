@@ -7,6 +7,14 @@
             <div class="card">
                 <div class="card-header">{{ __('商品画像') }}</div>
                 <div class="card-body">
+                    @foreach ($images as $image)
+                        <img src="{{ '/storage/' . $image['name'] }}" class="w-100 mb-3" onclick="clickDisplayAlert()"/>
+                    @endforeach
+                    <script>
+                        function clickDisplayAlert() {
+                        alert("ボタンがクリックされました！");
+                        }
+                    </script>
                 </div>
             </div>
         </div>
@@ -26,24 +34,16 @@
             </div>
         </div>
 
-        <div class="mt-5">
-            <div class="card">
-                <div class="card-header">{{ __('商品説明') }}</div>
-                <div class="card-body">
-                    <p>{{ $product_detail['name'] }}</p>
+        @foreach ($product_contents as $product_content)
+            <div class="mt-5">
+                <div class="card">
+                    <div class="card-header">{{ __('商品説明') }}</div>
+                    <div class="card-body">
+                            {{ $product_content['content'] }}
+                    </div>
                 </div>
             </div>
-        </div>
-
-        <div class="mt-5">
-            <div class="card">
-                <div class="card-header">{{ __('商品説明') }}</div>
-                <div class="card-body">
-                    <p>{{ $product_detail['name'] }}</p>
-                </div>
-            </div>
-        </div>
-
+        @endforeach
     </div>
 </div>
 @endsection
