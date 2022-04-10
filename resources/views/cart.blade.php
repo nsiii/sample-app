@@ -24,7 +24,7 @@
                             </button>
                         </form>
                         <form class="col input-group" action="/add_to_cart" method="POST">
-                            <a id="iconLink" class="me-2" href="#">
+                            <a class="me-2" href="#">
                                 {{ $cart_join_product['quantity'] }}
                             </a>
                             @csrf

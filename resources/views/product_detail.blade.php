@@ -3,11 +3,11 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-5">
+        <div class="col-md-6 col-12">
             <div class="card">
                 <div class="card-header">{{ __('商品画像') }}</div>
-                <div class="card-body">
-                    <img id="mainImage" width="400px">
+                <div class="card-body row justify-content-center">
+                    <img src="{{ '/storage/' . $images[0]['name'] }}" id="mainImage" width="400px">
                     <ul id="imageList" class="mt-5 row">
                         @foreach ($images as $image)
                             <li class="col-3 imgList">
@@ -16,6 +16,7 @@
                         @endforeach
                     </ul>
                     <script>
+                        // クリックした画像に切り替える
                         function clickChangeImage(src) {
                             const mainImageElement = document.getElementById('mainImage');
                             mainImageElement.setAttribute('src', src);
@@ -24,11 +25,17 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-7">
+        <div class="col-md-6 col-12">
             <div class="card">
                 <div class="card-header">{{ __('商品概要') }}</div>
                 <div class="card-body">
                     <p>{{ $product_detail['name'] }}</p>
+                    <p>¥{{ $product_detail['price'] }}税込</p>
+                    @if ($product_detail['stock'] > 0)
+                        <p>在庫あり</p>
+                    @else
+                        <p>在庫なし</p>
+                    @endif
                     <button type="button" class="btn btn-outline-primary">今すぐ買う</button>
                     <form class="input-group" action="/add_to_cart" method="POST">
                         @csrf

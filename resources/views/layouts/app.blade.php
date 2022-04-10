@@ -24,7 +24,7 @@
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm sticky-top">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
+                <a class="navbar-brand" href="{{ url('/home') }}">
                     {{ config('app.name', 'Laravel') }}
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
@@ -57,7 +57,7 @@
                             <form class="input-group" action="/search_result" method="POST">
                                 @csrf
                                 <button type="submit" class="btn btn-outline-secondary">
-                                    <i id="iconLink" data-feather="search"></i>
+                                    <i data-feather="search"></i>
                                 </button>
                                 <button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
                                     <span class="visually-hidden">Toggle Dropdown</span>
@@ -105,12 +105,12 @@
                             </div>
                         </li>
                         <li class="py-2 ms-4 nav-item">
-                            <a id="iconLink" href="/cart">
+                            <a href="/cart">
                                 <i data-feather="shopping-cart"></i>
                             </a>
                         </li>
                         <li class="py-2 ms-4 nav-item">
-                            <a id="iconLink" href="#">
+                            <a href="#">
                                 <i data-feather="heart"></i>
                             </a>
                         </li>

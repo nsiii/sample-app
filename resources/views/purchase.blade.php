@@ -14,7 +14,7 @@
                 <div class="card-body">
                     @foreach($add_products as $add_product)
                         <div class="mt-2 row align-items-center justify-content-between">
-                            <a id="iconLink" class="col-4" href="#">{{ $add_product['name'] }}</a>
+                            <a class="col-4" href="#">{{ $add_product['name'] }}</a>
                             <form class="col-2" action="/delete_from_cart" method="POST">
                                 @csrf
                                 <button class="btn btn-outline-secondary" type="submit">削除</button>
