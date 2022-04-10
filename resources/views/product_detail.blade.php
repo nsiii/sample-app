@@ -7,12 +7,18 @@
             <div class="card">
                 <div class="card-header">{{ __('商品画像') }}</div>
                 <div class="card-body">
-                    @foreach ($images as $image)
-                        <img src="{{ '/storage/' . $image['name'] }}" class="w-100 mb-3" onclick="clickDisplayAlert()"/>
-                    @endforeach
+                    <img id="mainImage" width="400px">
+                    <ul id="imageList" class="mt-5 row">
+                        @foreach ($images as $image)
+                            <li class="col-3 imgList">
+                                <img src="{{ '/storage/' . $image['name'] }}" class="w-100 mb-3" onclick="clickChangeImage(this.src)"/>
+                            </li>
+                        @endforeach
+                    </ul>
                     <script>
-                        function clickDisplayAlert() {
-                        alert("ボタンがクリックされました！");
+                        function clickChangeImage(src) {
+                            const mainImageElement = document.getElementById('mainImage');
+                            mainImageElement.setAttribute('src', src);
                         }
                     </script>
                 </div>
