@@ -54,11 +54,13 @@
         </div>
 
         @foreach ($product_contents as $product_content)
-            <div class="mt-5">
+            <div class="mt-4">
                 <div class="card">
-                    <div class="card-header">{{ __('商品説明') }}</div>
                     <div class="card-body">
-                            {{ $product_content['content'] }}
+                            <h3 class="pb-2 border-bottom ">説明</h3>
+                            <p>
+                                {{ $product_content['content'] }}
+                            </p>
                     </div>
                 </div>
             </div>

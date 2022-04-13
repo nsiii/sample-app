@@ -42,7 +42,8 @@ class HomeController extends Controller
         ->get();
 
         $matches = MyFunc::getUniqueArray($matches, 'product_id');
-        return view('search', compact('matches'));
+        $count = count($matches);
+        return view('search', compact('matches', 'count'));
     }
 
 

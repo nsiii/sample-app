@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-lg-2 col-md-3">
             <div class="card">
-                <div class="card-header">{{ __('Category') }}</div>
+                <div class="card-header">カテゴリ</div>
                 <div class="card-body">
                     @if (session('status'))
                         <div class="alert alert-success" role="alert">
@@ -21,7 +21,7 @@
                 
         <div class="col-lg-10 col-md-9">
             <div class="card">
-                <div class="card-header">{{ __('Products') }}</div>
+                <div class="card-header">検索結果:{{ $count }}件</div>
                 
                 <div class="card-body">
                     @if (session('status'))
