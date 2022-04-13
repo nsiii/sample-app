@@ -7,6 +7,7 @@ use App\Models\Product;
 use App\Models\Cart;
 use App\Models\Image;
 use App\Models\ProductDetail;
+use App\Lib\MyFunc;
 
 class HomeController extends Controller
 {
@@ -34,9 +35,13 @@ class HomeController extends Controller
     public function search_result(Request $request)
     {
         $keyword = $request->input('keyword');
-        // // 検索ワードと一致するものを取得する
-        $matches = Product::where('name','LIKE', '%'.$keyword.'%')->get();
-        
+        // キーワードと一致するものを取得する
+        $matches = Product::join('images', 'products.id', '=', 'images.product_id')
+        ->where('products.name','LIKE', "%$keyword%")
+        ->select('products.id as product_id','products.name as product_name', 'price', 'stock', 'images.id as img_id', 'images.name as thumbnail_img')
+        ->get();
+
+        $matches = MyFunc::getUniqueArray($matches, 'product_id');
         return view('search', compact('matches'));
     }
 
@@ -48,9 +53,14 @@ class HomeController extends Controller
         $product_id = $request->input('product_id');
         // 取得した商品IDでID検索し、そのレコードを取得
         $product_detail = Product::where('id', $product_id)->first();
-        $images = Image::where('product_id', $product_id)->get();
+        $images = Image::where('product_id', $product_id)->get()->all();
         $product_contents = ProductDetail::where('product_id', $product_id)->get();
-        return view('product_detail', compact('product_detail', 'images', 'product_contents'));
+        $empty_images = "画像がありません";
+        if (empty($images)) {
+            return view('product_detail', compact('product_detail', 'empty_images', 'product_contents'));
+        } else {
+            return view('product_detail', compact('product_detail', 'images', 'product_contents'));
+        }
     }
 
 

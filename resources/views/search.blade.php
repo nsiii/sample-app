@@ -33,11 +33,11 @@
                         @foreach ($matches as $match)
                             <form method="POST" action="/product_detail">
                                 @csrf
-                                <input type="hidden" name="product_id" value="{{ $match['id'] }}">
+                                <input type="hidden" name="product_id" value="{{ $match['product_id'] }}">
                                 <button type="submit" class="col btn btn-link">
-                                    <p>名前: {{ $match['name'] }}</p>
-                                    <p>金額: {{ $match['price'] }}円</p>
-                                    <p>在庫: {{ $match['stock'] }}個</p>    
+                                    <img src="{{ '/storage/' . $match['thumbnail_img'] }}" class="mb-3 img-thumbnail">
+                                    <p>{{ $match['product_name'] }}</p>
+                                    <p>¥{{ number_format($match['price']) }}</p>
                                 </button>
                             </form>
                         @endforeach
