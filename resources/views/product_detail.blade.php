@@ -6,7 +6,7 @@
         <div class="col-md-6 col-12">
             <div class="card">
                 <div class="card-body row justify-content-center">
-                    @if (isset($images))
+                    @if (is_array($images))
                         <img src="{{ '/storage/' . $images[0]['name'] }}" id="mainImage" width="400px">
                         <ul class="mt-5 row">
                             @foreach ($images as $image)
@@ -16,7 +16,7 @@
                             @endforeach
                         </ul>
                     @else
-                        <p>{{ $empty_images }}</p>
+                        <p>{{ $images }}</p>
                     @endif
                     <script>
                         // クリックした画像に切り替える
@@ -31,15 +31,24 @@
         <div class="col-md-6 col-12">
             <div class="card">
                 <div class="card-body">
-                    <h3 class="pb-2 border-bottom ">{{ $product_detail['name'] }}</h3>
-                    <p>- カテゴリ</p>
-                    <p>¥{{ number_format($product_detail['price']) }} 税込</p>
+                    <h3 class="border-bottom ">{{ $product_detail['name'] }}</h3>
+                    <div class="list-group list-group-horizontal">
+                        @if (is_array($categories))
+                            @foreach ($categories as $category)
+                                <a href="#" class="pe-2" style="font-size: 0.8em">- {{ $category['category_name'] }}</a href="">
+                            @endforeach
+                        @else
+                            <p>- {{ $categories }}</p>
+                        @endif
+                    </div>
+                    <p style="text-decoration: line-through">¥{{ number_format($product_detail['price']) }} 税込</p>
+                    <h4 style="color:red">¥{{ number_format($product_detail['price'] * 0.7) }} 税込</h4>
                     @if ($product_detail['stock'] > 0)
                         <p>在庫あり</p>
                         <form class="input-group" action="/add_to_cart" method="POST">
                             @csrf
-                            <button type="submit" class="px-3 btn btn-outline-secondary rounded-pill"><i class="me-2" data-feather="shopping-cart"></i>カートに入れる</button>
-                            <button type="submit" class="px-5 btn btn-outline-secondary rounded-pill">今すぐ買う</button>
+                            <button type="submit" class="ms-2 px-3 btn btn-outline-secondary rounded-pill"><i class="me-2" data-feather="shopping-cart"></i>カートに入れる</button>
+                            <button type="submit" class="ms-2 px-5 btn btn-outline-secondary rounded-pill">今すぐ買う</button>
                             <input type="hidden" name="product_id" value="{{ $product_detail['id'] }}">
                             <input type="hidden" name="product_price" value="{{ $product_detail['price'] }}">
                         </form>

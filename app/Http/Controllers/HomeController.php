@@ -8,6 +8,7 @@ use App\Models\Cart;
 use App\Models\Image;
 use App\Models\ProductDetail;
 use App\Lib\MyFunc;
+use App\Models\ProductProductCategory;
 
 class HomeController extends Controller
 {
@@ -34,12 +35,23 @@ class HomeController extends Controller
     // この中でやりたい処理は、検索キーワードに一致する商品をビューに表示する
     public function search_result(Request $request)
     {
+        // postでcategory_idが送信されたときとそうでない時で分岐
+        $category_id = $request->input('category_id');
         $keyword = $request->input('keyword');
-        // キーワードと一致するものを取得する
-        $matches = Product::join('images', 'products.id', '=', 'images.product_id')
-        ->where('products.name','LIKE', "%$keyword%")
-        ->select('products.id as product_id','products.name as product_name', 'price', 'stock', 'images.id as img_id', 'images.name as thumbnail_img')
-        ->get();
+        if (empty($category_id)) {
+            // キーワードと一致するものを取得する
+            $matches = Product::join('images', 'products.id', '=', 'images.product_id')
+            ->where('products.name','LIKE', "%$keyword%")
+            ->select('products.id as product_id','products.name as product_name', 'price', 'stock', 'images.id as img_id', 'images.name as thumbnail_img')
+            ->get();
+        } else {
+            // $category_idを持っている商品を画像と共に取得する
+            $matches = Product::join('product_product_categories', 'products.id', '=', 'product_product_categories.product_id')
+            ->join('images', 'products.id', '=', 'images.product_id')
+            ->where('product_category_id', $category_id)
+            ->select('product_category_id', 'products.id as product_id', 'products.name as product_name', 'price', 'stock', 'images.id as img_id', 'images.name as thumbnail_img')
+            ->get();
+        }
 
         $matches = MyFunc::getUniqueArray($matches, 'product_id');
         $count = count($matches);
@@ -54,14 +66,16 @@ class HomeController extends Controller
         $product_id = $request->input('product_id');
         // 取得した商品IDでID検索し、そのレコードを取得
         $product_detail = Product::where('id', $product_id)->first();
+        $categories = ProductProductCategory::join('product_categories', 'product_category_id', '=', 'product_categories.id')
+        ->where('product_product_categories.product_id', $product_id)
+        ->select('name as category_name')
+        ->get()->all();
         $images = Image::where('product_id', $product_id)->get()->all();
         $product_contents = ProductDetail::where('product_id', $product_id)->get();
-        $empty_images = "画像がありません";
-        if (empty($images)) {
-            return view('product_detail', compact('product_detail', 'empty_images', 'product_contents'));
-        } else {
-            return view('product_detail', compact('product_detail', 'images', 'product_contents'));
-        }
+        $images = MyFunc::confirmEmptyArray($images, '画像がありません');
+        $categories = MyFunc::confirmEmptyArray($categories, 'カテゴリがありません');
+
+        return view('product_detail', compact('product_detail', 'images', 'product_contents', 'categories'));
     }
 
 
@@ -74,12 +88,8 @@ class HomeController extends Controller
         $carts_join_products = Cart::where('user_id', $user['id'])->join('products', 'carts.product_id', '=', 'products.id')->get()->all();
         
         // カートが空の場合、メッセージを出す
-        if (empty($carts_join_products)) {
-            $empty_cart = "カートの中身は空です。";
-            return view('cart', compact('empty_cart'));
-        } else {
-            return view('cart', compact('carts_join_products'));
-        }
+        $carts_join_products = MyFunc::confirmEmptyArray($carts_join_products, 'カートの中身は空です。');
+        return view('cart', compact('carts_join_products'));
     }
     
     public function add_to_cart(Request $request)

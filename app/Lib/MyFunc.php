@@ -16,4 +16,13 @@ class MyFunc
        }   
        return $unique_array;    
     }   
-}
+
+    public static function confirmEmptyArray($array, $empty_message)
+    {   
+        if (empty($array)) {
+            return $empty_message;
+        } else {
+            return $array;
+        }   
+    }   
+   }
