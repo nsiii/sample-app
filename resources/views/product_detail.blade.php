@@ -31,7 +31,7 @@
         <div class="col-md-6 col-12">
             <div class="card">
                 <div class="card-body">
-                    <h3 class="border-bottom ">{{ $product_detail['name'] }}</h3>
+                    <h3 class="border-bottom">{{ $product_detail['name'] }}</h3>
                     <div class="list-group list-group-horizontal">
                         @if (is_array($categories))
                             @foreach ($categories as $category)
@@ -45,7 +45,7 @@
                     <h4 style="color:red">¥{{ number_format($product_detail['price'] * 0.7) }} 税込</h4>
                     @if ($product_detail['stock'] > 0)
                         <p>在庫あり</p>
-                        <form class="input-group" action="/add_to_cart" method="POST">
+                        <form class="input-group" action="{{ route('add_to_cart') }}" method="POST">
                             @csrf
                             <button type="submit" class="ms-2 px-3 btn btn-outline-secondary rounded-pill"><i class="me-2" data-feather="shopping-cart"></i>カートに入れる</button>
                             <button type="submit" class="ms-2 px-5 btn btn-outline-secondary rounded-pill">今すぐ買う</button>

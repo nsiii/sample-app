@@ -33,7 +33,7 @@ class HomeController extends Controller
     }
     
     // この中でやりたい処理は、検索キーワードに一致する商品をビューに表示する
-    public function search_result(Request $request)
+    public function search(Request $request)
     {
         // postでcategory_idが送信されたときとそうでない時で分岐
         $category_id = $request->input('category_id');
@@ -55,12 +55,12 @@ class HomeController extends Controller
 
         $matches = MyFunc::getUniqueArray($matches, 'product_id');
         $count = count($matches);
-        return view('search', compact('matches', 'count'));
+        return view('search', compact('keyword', 'matches', 'count'));
     }
 
 
     // 商品IDを取得して、詳しい商品の情報を返す。
-    public function product_detail(Request $request)
+    public function product(Request $request)
     {  
         // 商品IDを取得
         $product_id = $request->input('product_id');
@@ -85,7 +85,10 @@ class HomeController extends Controller
         $user = \Auth::user();
     
         // ログインしているユーザーのカートの中身と関連の商品情報を取得
-        $carts_join_products = Cart::where('user_id', $user['id'])->join('products', 'carts.product_id', '=', 'products.id')->get()->all();
+        $carts_join_products = Cart::where('user_id', $user['id'])
+        ->join('products', 'carts.product_id', '=', 'products.id')
+        ->select('user_id','carts.product_id as product_id', 'name', 'quantity', 'carts.price as sum_price', 'products.price as unit_price', 'store_id', 'purchase_detail_history_id', 'stock')
+        ->get()->all();
         
         // カートが空の場合、メッセージを出す
         $carts_join_products = MyFunc::confirmEmptyArray($carts_join_products, 'カートの中身は空です。');
@@ -127,10 +130,10 @@ class HomeController extends Controller
             ]);
         }
         
-        return redirect()->route('cart');
+        return redirect()->route('cart', ['id' => $user['id']]);
     }
 
-    public function delete_from_cart(Request $request)
+    public function delete(Request $request)
     {   
 
         // ユーザー情報の取得
@@ -144,7 +147,7 @@ class HomeController extends Controller
             $delete_record->delete();
         }
         
-        return redirect()->route('cart')->with('success', "{$product_name}をカートから削除しました!");
+        return redirect()->route('cart', ['id' => $user['id']])->with('success', "{$product_name}をカートから削除しました!");
     }
 
     public function purchase(Request $request)

@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('auth/login');
+    return view('home');
 });
 
 Auth::routes();
@@ -22,10 +22,10 @@ Auth::routes();
 
 Route::group(['middleware' => 'auth'], function() {
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-    Route::get('/cart', [App\Http\Controllers\HomeController::class, 'cart'])->name('cart');
-    Route::post('/search_result', [App\Http\Controllers\HomeController::class, 'search_result'])->name('search_result');
-    Route::post('/product_detail', [App\Http\Controllers\HomeController::class, 'product_detail'])->name('product_detail');
-    Route::post('/add_to_cart', [App\Http\Controllers\HomeController::class, 'add_to_cart'])->name('add_to_cart');
-    Route::post('/delete_from_cart', [App\Http\Controllers\HomeController::class, 'delete_from_cart'])->name('delete_from_cart');
+    Route::get('user/{id}/cart', [App\Http\Controllers\HomeController::class, 'cart'])->name('cart');
+    Route::post('add_to_cart', [App\Http\Controllers\HomeController::class, 'add_to_cart'])->name('add_to_cart');
+    Route::post('/search', [App\Http\Controllers\HomeController::class, 'search'])->name('search');
+    Route::post('/product/{id}', [App\Http\Controllers\HomeController::class, 'product'])->name('product');
+    Route::post('/delete', [App\Http\Controllers\HomeController::class, 'delete'])->name('delete');
     Route::post('/purchase', [App\Http\Controllers\HomeController::class, 'purchase'])->name('purchase'); 
  });

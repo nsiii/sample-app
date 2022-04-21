@@ -54,20 +54,20 @@
                             @endif
                         @else
                         <li class="nav-item">
-                            <form class="input-group" action="/search_result" method="POST">
+                            <form class="input-group" action="{{ route('search', ['keyword' => 'keyword']) }}" method="POST">
                                 @csrf
                                 <button type="submit" class="btn btn-outline-secondary">
                                     <i data-feather="search"></i>
                                 </button>
-                                <button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+                                {{-- <button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
                                     <span class="visually-hidden">Toggle Dropdown</span>
-                                </button>
+                                </button> --}}
                                 <ul class="dropdown-menu">
                                     @foreach($product_categories as $product_category)
                                         <li><a class="dropdown-item" href="#">{{ $product_category['name'] }}</a></li>
                                     @endforeach
                                 </ul> 
-                                <input type="text" name="keyword" class="form-control" placeholder="検索" aria-label="Text input with segmented dropdown button">
+                                <input type="text" name="keyword" class="form-control" placeholder="アイテムをさがす" aria-label="Text input with segmented dropdown button">
                             </form>
                         </li>
                         <li class="ms-4 nav-item dropdown">
@@ -105,7 +105,7 @@
                             </div>
                         </li>
                         <li class="py-2 ms-4 nav-item">
-                            <a href="/cart">
+                            <a href="{{ route('cart', ['id' => $user['id']]) }}">
                                 <i data-feather="shopping-cart"></i>
                             </a>
                         </li>

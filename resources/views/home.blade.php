@@ -1,6 +1,6 @@
 @extends('layouts.category')
 
-@section('content')
+@section('card_right')
 <div class="card-header">{{ __('Products') }}</div>
 
 <div class="card-body">

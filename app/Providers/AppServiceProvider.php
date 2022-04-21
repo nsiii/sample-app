@@ -27,8 +27,9 @@ class AppServiceProvider extends ServiceProvider
         
         // クロージャベースのコンポーザを使用
         view()->composer('*', function ($view) {
+            $user = \Auth::user();
             $product_categories = ProductCategory::get(['id','name']);
-            $view->with('product_categories', $product_categories);
+            $view->with('user', $user)->with('product_categories', $product_categories);
         });
     }
 }
