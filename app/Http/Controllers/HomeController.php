@@ -68,12 +68,13 @@ class HomeController extends Controller
         $product_detail = Product::where('id', $product_id)->first();
         $categories = ProductProductCategory::join('product_categories', 'product_category_id', '=', 'product_categories.id')
         ->where('product_product_categories.product_id', $product_id)
-        ->select('name as category_name')
+        ->select('product_categories.id as category_id','name as category_name')
         ->get()->all();
         $images = Image::where('product_id', $product_id)->get()->all();
         $product_contents = ProductDetail::where('product_id', $product_id)->get();
         $images = MyFunc::confirmEmptyArray($images, '画像がありません');
         $categories = MyFunc::confirmEmptyArray($categories, 'カテゴリがありません');
+        $categories = MyFunc::getUniqueArray($categories, 'category_id');
 
         return view('product_detail', compact('product_detail', 'images', 'product_contents', 'categories'));
     }

@@ -29,6 +29,12 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 
 const app = new Vue({
     el: '#app',
+    methods: {
+        changeImage: function(src) {
+            const mainImageElement = this.$refs.mainImage
+            mainImageElement.setAttribute('src', src)
+        } 
+    }
 });
 
 

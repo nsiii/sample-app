@@ -7,24 +7,17 @@
             <div class="card">
                 <div class="card-body row justify-content-center">
                     @if (is_array($images))
-                        <img src="{{ '/storage/' . $images[0]['name'] }}" id="mainImage" width="400px">
+                        <img src="{{ '/storage/' . $images[0]['name'] }}" ref="mainImage" max-width="400px">
                         <ul class="mt-5 row">
                             @foreach ($images as $image)
                                 <li class="col-3 imgList">
-                                    <img src="{{ '/storage/' . $image['name'] }}" class="w-100 mb-3" onclick="clickChangeImage(this.src)"/>
+                                    <img src="{{ '/storage/' . $image['name'] }}" class="w-100 mb-3" @click="changeImage(this.src)"/>
                                 </li>
                             @endforeach
                         </ul>
                     @else
                         <p>{{ $images }}</p>
                     @endif
-                    <script>
-                        // クリックした画像に切り替える
-                        function clickChangeImage(src) {
-                            const mainImageElement = document.getElementById('mainImage');
-                            mainImageElement.setAttribute('src', src);
-                        }
-                    </script>
                 </div>
             </div>
         </div>
