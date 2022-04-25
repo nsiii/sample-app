@@ -9,13 +9,14 @@
             {{ session('status') }}
         </div>
     @endif
-    <div class="row row-cols-3">
+    <div class="row container">
         @foreach ($matches as $match)
-            <form method="POST" action="{{ route('product',['id' => $match['product_id']]) }}">
-                @csrf
+            <form class="col-4" method="GET" action="{{ route('product') }}">
                 <input type="hidden" name="product_id" value="{{ $match['product_id'] }}">
-                <button type="submit" class="col btn btn-link">
-                    <img src="{{ '/storage/' . $match['thumbnail_img'] }}" class="mb-3 img-thumbnail">
+                <button type="submit" class="btn btn-link">
+                    <div class="ratio ratio-1x1">
+                        <img id="objectFit" src="{{ '/storage/' . $match['thumbnail_img'] }}" class="mb-3">
+                    </div>
                     <p>{{ $match['product_name'] }}</p>
                     <p>¥{{ number_format($match['price']) }}</p>
                 </button>

@@ -5324,8 +5324,9 @@ Vue.component('example-component', (__webpack_require__(/*! ./components/Example
 var app = new Vue({
   el: '#app',
   methods: {
-    changeImage: function changeImage(src) {
+    changeImage: function changeImage(event) {
       var mainImageElement = this.$refs.mainImage;
+      var src = event.target.getAttribute('src');
       mainImageElement.setAttribute('src', src);
     }
   }

@@ -54,8 +54,7 @@
                             @endif
                         @else
                         <li class="nav-item">
-                            <form class="input-group" action="{{ route('search', ['keyword' => 'keyword']) }}" method="POST">
-                                @csrf
+                            <form class="input-group" action="{{ route('search') }}" method="GET">
                                 <button type="submit" class="btn btn-outline-secondary">
                                     <i data-feather="search"></i>
                                 </button>

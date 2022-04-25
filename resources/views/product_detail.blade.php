@@ -7,11 +7,15 @@
             <div class="card">
                 <div class="card-body row justify-content-center">
                     @if (is_array($images))
-                        <img src="{{ '/storage/' . $images[0]['name'] }}" ref="mainImage" max-width="400px">
+                        <div class="col-12 ratio ratio-1x1">
+                            <img id="objectFit" src="{{ '/storage/' . $images[0]['name'] }}" ref="mainImage" max-width="400px">
+                        </div>
                         <ul class="mt-5 row">
                             @foreach ($images as $image)
                                 <li class="col-3 imgList">
-                                    <img src="{{ '/storage/' . $image['name'] }}" class="w-100 mb-3" @click="changeImage(this.src)"/>
+                                    <div class="ratio ratio-1x1">
+                                        <img id="objectFit" src="{{ '/storage/' . $image['name'] }}" class="w-100 mb-3" v-on:click="changeImage($event)"/>
+                                    </div>
                                 </li>
                             @endforeach
                         </ul>

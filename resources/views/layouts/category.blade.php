@@ -13,9 +13,8 @@
                             </div>
                         @endif
                             @foreach($product_categories as $product_category)
-                                <form method="POST" action="{{ route('search', ['category' => $product_category['name']]) }}">
-                                    @csrf
-                                    <input type="hidden" name="category_id" value="{{ $product_category['id'] }}">
+                                <form method="GET" action="{{ route('search') }}">
+                                    <input type="hidden" name="category" value="{{ $product_category }}">
                                     <button type="submit" class="col btn btn-link">{{ $product_category['name'] }}<i data-feather="chevron-right"></i></button>
                                 </form>
                             @endforeach

@@ -11303,3 +11303,8 @@ a:hover, .btn-link:hover {
   opacity: 0.7;
   transition: 0.3s;
 }
+
+#objectFit {
+  -o-object-fit: cover;
+     object-fit: cover;
+}
