@@ -27,5 +27,5 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/search', [App\Http\Controllers\HomeController::class, 'search'])->name('search');
     Route::get('/product', [App\Http\Controllers\HomeController::class, 'product'])->name('product');
     Route::post('/delete', [App\Http\Controllers\HomeController::class, 'delete'])->name('delete');
-    Route::post('/purchase', [App\Http\Controllers\HomeController::class, 'purchase'])->name('purchase'); 
+    Route::post('/order', [App\Http\Controllers\HomeController::class, 'order'])->name('order'); 
  });

@@ -45,6 +45,11 @@
                         <form class="input-group" action="{{ route('add_to_cart') }}" method="POST">
                             @csrf
                             <button type="submit" class="ms-2 px-3 btn btn-outline-secondary rounded-pill"><i class="me-2" data-feather="shopping-cart"></i>カートに入れる</button>
+                            <input type="hidden" name="product_id" value="{{ $product_detail['id'] }}">
+                            <input type="hidden" name="product_price" value="{{ $product_detail['price'] }}">
+                        </form>
+                        <form class="input-group" action="{{ route('add_to_cart') }}" method="POST">
+                            @csrf
                             <button type="submit" class="ms-2 px-5 btn btn-outline-secondary rounded-pill">今すぐ買う</button>
                             <input type="hidden" name="product_id" value="{{ $product_detail['id'] }}">
                             <input type="hidden" name="product_price" value="{{ $product_detail['price'] }}">

@@ -15,8 +15,7 @@
                 <div class="card-body">
                     @foreach($carts_join_products as $cart_join_product)
                         <div class="mt-2 row align-items-center justify-content-between">
-                            <form class="col input-group" method="POST" action="/product_detail">
-                                @csrf
+                            <form class="col input-group" method="GET" action="{{ route('product') }}">
                                 <input type="hidden" name="product_id" value="{{ $cart_join_product['product_id'] }}">
                                 <button type="submit" class="btn btn-link">
                                     {{ $cart_join_product['name'] }}
@@ -46,9 +45,20 @@
             <div class="card">
                 <div class="card-header">{{ __('商品概要') }}</div>
                 <div class="card-body">
+                <form class="input-group" action="{{ route('order') }}" method="POST">
+                    @csrf
+                    <button type="submit" class="ms-2 px-5 btn btn-outline-secondary rounded-pill">今すぐ買う</button>
+                    @php
+                        $total = 0;
+                    @endphp
                     @foreach ($carts_join_products as $cart_join_product)
-                        <p>{{ $cart_join_product['sum_price'] }}</p>
+                        @php
+                            $total += $cart_join_product['sum_price'];
+                        @endphp
                     @endforeach
+                    <input type="hidden" name="sum_price" value="{{ $total }}">
+                    {{ $total }}
+                </form>
                 </div>
             </div>
         </div>

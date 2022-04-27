@@ -9,6 +9,8 @@ use App\Models\Image;
 use App\Models\ProductDetail;
 use App\Lib\MyFunc;
 use App\Models\ProductProductCategory;
+use App\Models\PurchaseDetailHistory;
+use App\Models\PurchaseHistory;
 
 class HomeController extends Controller
 {
@@ -35,7 +37,6 @@ class HomeController extends Controller
     // この中でやりたい処理は、検索キーワードに一致する商品をビューに表示する
     public function search(Request $request)
     {
-        // postでcategory_idが送信されたときとそうでない時で分岐
         $category_id = $request->input('category_id');
         $keyword = $request->input('keyword');
         if (empty($category_id)) {
@@ -73,8 +74,8 @@ class HomeController extends Controller
         $images = Image::where('product_id', $product_id)->get()->all();
         $product_contents = ProductDetail::where('product_id', $product_id)->get();
         $images = MyFunc::confirmEmptyArray($images, '画像がありません');
-        $categories = MyFunc::confirmEmptyArray($categories, 'カテゴリがありません');
         $categories = MyFunc::getUniqueArray($categories, 'category_id');
+        $categories = MyFunc::confirmEmptyArray($categories, 'カテゴリがありません');
 
         return view('product_detail', compact('product_detail', 'images', 'product_contents', 'categories'));
     }
@@ -104,11 +105,10 @@ class HomeController extends Controller
         $product_id = $request->input('product_id');
         $product_price = $request->input('product_price');
 
-        // 既にカートに入れた商品かどうか判別する
-        $already_exist = Cart::where('user_id', $user['id'])->where('product_id', $product_id)->first();
+        // ユーザー認証及び商品ID照合
+        $cart = Cart::where('user_id', $user['id'])->where('product_id', $product_id)->first();
         
-        // 同じproduct_idが既にカート内にある時、quantityの値を+1する
-        if (empty($already_exist)) {
+        if (empty($cart)) {
             // ユーザーIDをcartテーブルに登録し、cart_idを取得
             $cart_id = Cart::insertGetId([
                 'user_id' => $user['id'],
@@ -117,17 +117,15 @@ class HomeController extends Controller
                 'price' => $product_price
             ]);
         } else {
-            // ユーザー認証
-            $i = Cart::where('user_id', $user['id'])->where('product_id', $product_id);
-            // 存在しているレコードの中からquantityカラムを取得
-            $quantity = $i->first('quantity');
-            $quantity['quantity'] += 1;
-            $price = $i->first('price');
-            $price['price'] += $product_price;
+            // 数量と金額を更新する
+            $cart['quantity'] += 1;
+            $cart['price'] += $product_price;
 
-            $i->update([
-                'quantity' => $quantity['quantity'],
-                'price' => $price['price']
+            Cart::where('user_id', $user['id'])
+            ->where('product_id', $product_id)
+            ->update([
+                'quantity' => $cart['quantity'],
+                'price' => $cart['price']
             ]);
         }
         
@@ -151,19 +149,32 @@ class HomeController extends Controller
         return redirect()->route('cart', ['id' => $user['id']])->with('success', "{$product_name}をカートから削除しました!");
     }
 
-    public function purchase(Request $request)
+    public function order(Request $request)
     {   
+        // 合計金額を取得
+        $sum_price = $request->input('sum_price');
         // ユーザー情報の取得
         $user = \Auth::user();
-        // 商品IDを取得
-        $product_id = $request->input('product_id');
-        $product_name = $request->input('product_name');
-        // 押した削除ボタンの商品IDと一致するレコードを取得
-        $delete_records = Cart::where('user_id', $user['id'])->where('product_id', $product_id)->get();
-        foreach ($delete_records as $delete_record) {
-            $delete_record->delete();
+        // カートの中身を取得
+        $carts = Cart::where('user_id', $user['id'])->get();
+        // 商品IDを配列に格納
+        $product_id = [];
+        foreach ($carts as $cart) {
+            $product_id[] = $cart['product_id'];
+            $cart->delete();
         }
-        
-        return redirect()->route('cart')->with('success', "{$product_name}をカートから削除しました!");
+        // 購入履歴テーブルにデータを挿入
+        $purchase_history_id = PurchaseHistory::insertGetId([
+            'user_id' => $user['id'],
+            'price' => $sum_price
+        ]);
+        // 購入履歴詳細テーブルにデータを挿入
+        for ($i=0; $i < count($product_id); $i++) { 
+            PurchaseDetailHistory::insert([
+                'purchase_history_id' => $purchase_history_id,
+                'product_id' => $product_id[$i]
+            ]);
+        }
+        dd($purchase_history_id);
     }
 }

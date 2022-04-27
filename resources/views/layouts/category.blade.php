@@ -14,7 +14,8 @@
                         @endif
                             @foreach($product_categories as $product_category)
                                 <form method="GET" action="{{ route('search') }}">
-                                    <input type="hidden" name="category" value="{{ $product_category }}">
+                                    <input type="hidden" name="category_id" value="{{ $product_category['id'] }}">
+                                    <input type="hidden" name="category_name" value="{{ $product_category['name'] }}">
                                     <button type="submit" class="col btn btn-link">{{ $product_category['name'] }}<i data-feather="chevron-right"></i></button>
                                 </form>
                             @endforeach
