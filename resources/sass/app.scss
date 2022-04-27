@@ -29,3 +29,34 @@ a, .btn-link{
 #objectFit {
   object-fit: cover;
 }
+
+#icon{
+  position: relative;
+}
+
+#icon[data-num="0"]::before {
+  display: none;
+}
+
+#icon::before {
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  content: attr(data-num);
+  min-width: 20px;
+  height: 20px;
+  box-sizing: border-box;
+  padding: 4px;
+  font-family: "sans-serif";
+  font-size: 10px;
+  font-weight: bold;
+  background-color: red;
+  border: 1px solid #fff;
+  border-radius: 10px;
+  top: 0;
+  right: 0;
+  transform: translate(40%, -40%);
+  z-index: 1;
+}

@@ -11,6 +11,7 @@ use App\Lib\MyFunc;
 use App\Models\ProductProductCategory;
 use App\Models\PurchaseDetailHistory;
 use App\Models\PurchaseHistory;
+use Carbon\Carbon;
 
 class HomeController extends Controller
 {
@@ -32,6 +33,16 @@ class HomeController extends Controller
     public function index()
     {   
         return view('home');
+    }
+
+    public function order_history()
+    {   
+        return view('order_history');
+    }
+
+    public function mypage()
+    {   
+        return view('mypage');
     }
     
     // この中でやりたい処理は、検索キーワードに一致する商品をビューに表示する
@@ -129,7 +140,7 @@ class HomeController extends Controller
             ]);
         }
         
-        return redirect()->route('cart', ['id' => $user['id']]);
+        return redirect()->route('cart');
     }
 
     public function delete(Request $request)
@@ -146,7 +157,7 @@ class HomeController extends Controller
             $delete_record->delete();
         }
         
-        return redirect()->route('cart', ['id' => $user['id']])->with('success', "{$product_name}をカートから削除しました!");
+        return redirect()->route('cart')->with('success', "{$product_name}をカートから削除しました!");
     }
 
     public function order(Request $request)
@@ -166,15 +177,19 @@ class HomeController extends Controller
         // 購入履歴テーブルにデータを挿入
         $purchase_history_id = PurchaseHistory::insertGetId([
             'user_id' => $user['id'],
-            'price' => $sum_price
+            'price' => $sum_price,
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
         ]);
         // 購入履歴詳細テーブルにデータを挿入
         for ($i=0; $i < count($product_id); $i++) { 
             PurchaseDetailHistory::insert([
                 'purchase_history_id' => $purchase_history_id,
-                'product_id' => $product_id[$i]
+                'product_id' => $product_id[$i],
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
             ]);
         }
-        dd($purchase_history_id);
+        return redirect()->route('home')->with('success', "注文完了メールを送信しました!");
     }
 }

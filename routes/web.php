@@ -22,10 +22,13 @@ Auth::routes();
 
 Route::group(['middleware' => 'auth'], function() {
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-    Route::get('user/{id}/cart', [App\Http\Controllers\HomeController::class, 'cart'])->name('cart');
+    Route::get('/cart', [App\Http\Controllers\HomeController::class, 'cart'])->name('cart');
     Route::post('add_to_cart', [App\Http\Controllers\HomeController::class, 'add_to_cart'])->name('add_to_cart');
     Route::get('/search', [App\Http\Controllers\HomeController::class, 'search'])->name('search');
     Route::get('/product', [App\Http\Controllers\HomeController::class, 'product'])->name('product');
     Route::post('/delete', [App\Http\Controllers\HomeController::class, 'delete'])->name('delete');
+    Route::get('/confirm', [App\Http\Controllers\HomeController::class, 'confirm'])->name('confirm');
+    Route::get('/user/{id}/order_history', [App\Http\Controllers\HomeController::class, 'order_history'])->name('order_history');
+    Route::get('/user/{id}/mypage', [App\Http\Controllers\HomeController::class, 'mypage'])->name('mypage');
     Route::post('/order', [App\Http\Controllers\HomeController::class, 'order'])->name('order'); 
  });

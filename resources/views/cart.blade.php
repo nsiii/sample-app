@@ -47,7 +47,7 @@
                 <div class="card-body">
                 <form class="input-group" action="{{ route('order') }}" method="POST">
                     @csrf
-                    <button type="submit" class="ms-2 px-5 btn btn-outline-secondary rounded-pill">今すぐ買う</button>
+                    <button type="submit" class="ms-2 px-5 btn btn-outline-secondary rounded-pill">レジに進む</button>
                     @php
                         $total = 0;
                     @endphp
@@ -57,7 +57,6 @@
                         @endphp
                     @endforeach
                     <input type="hidden" name="sum_price" value="{{ $total }}">
-                    {{ $total }}
                 </form>
                 </div>
             </div>
